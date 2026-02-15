@@ -1,7 +1,7 @@
 [project]
-name = "pfa"
+name = "pfa-interview"
 version = "0.1.0"
-description = "A small RAG chatbot for PFA"
+description = "Northstar chat agent"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -14,4 +14,9 @@ dependencies = [
     "markitdown[docx]>=0.1.4",
     "pdf2docx>=0.5.8",
     "uvicorn>=0.40.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
 ]

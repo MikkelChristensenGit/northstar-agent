@@ -10,16 +10,20 @@ load_dotenv(dotenv_path=env_path)
 # Initialization
 
 # 1) set up embedding model for query embedding
-embeddings = OpenAIEmbeddings(model=os.getenv("EMBEDDING_MODEL"))
+embedding_model = os.getenv("EMBEDDING_MODEL")
+assert embedding_model is not None
+embeddings = OpenAIEmbeddings(model=embedding_model)
 
 # 2) connect to existing Qdrant collection
+qdrant_collection = os.getenv("QDRANT_COLLECTION")
+assert qdrant_collection is not None
 vectorstore = QdrantVectorStore.from_existing_collection(
     url=os.getenv("QDRANT_URL"),
-    collection_name=os.getenv("QDRANT_COLLECTION"),
+    collection_name=qdrant_collection,
     embedding=embeddings,
 )
 
-# 3) LLM 
+# 3) LLM
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 
@@ -27,9 +31,11 @@ def retrieve_context(question: str, k: int = 3) -> list:
     """Retrieve top k documents for a question."""
     return vectorstore.similarity_search(question, k=k)
 
+
 def build_context(docs: list) -> str:
     """Format documents into a single context string with separator."""
     return "\n\n---\n\n".join(doc.page_content for doc in docs)
+
 
 def generate_answer(question: str, k: int = 3) -> dict:
     """Generate an answer and return sources."""
@@ -43,4 +49,3 @@ def generate_answer(question: str, k: int = 3) -> dict:
     )
     response = llm.invoke(prompt)
     return {"answer": response.content}
-

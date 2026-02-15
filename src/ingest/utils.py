@@ -8,9 +8,10 @@ def markdown_to_documents(md_path: str):
     docs = loader.load()
     return docs
 
+
 def save_chunks(chunks):
     """Save the chunks as a jsonl file."""
-    with open("data/chunks/chunks.jsonl", "w") as f:    
+    with open("data/chunks/chunks.jsonl", "w") as f:
         for chunk in chunks:
             json.dump({"text": chunk.page_content, "metadata": chunk.metadata}, f)
             f.write("\n")
