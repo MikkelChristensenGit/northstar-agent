@@ -16,7 +16,7 @@ load_dotenv(dotenv_path=env_path)
 
 def ingest_pipeline():
     """Run the ingest pipeline."""
-    docs = markdown_to_documents("/Users/mchr/Documents/pfa/data/markdown/northstar.md")
+    docs = markdown_to_documents("data/markdown/northstar.md")
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=500, chunk_overlap=50
